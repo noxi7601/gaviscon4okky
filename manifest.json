@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+
+    "name": "GAVISCON for OKKY",
+    "description": "OKKY 의 염증을 제거합니다.",
+    "version": "1.0",
+
+    "permissions": [ "storage" ],
+    "host_permissions": [ "http://*.okky.kr/*", "https://*.okky.kr/*" ],
+
+    "content_scripts": [
+        {
+            "matches": [ "http://*.okky.kr/*", "https://*.okky.kr/*" ],
+            "js": [ "scripts/content.js" ]
+        }
+    ]
+}
