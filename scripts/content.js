@@ -11,11 +11,17 @@ class MyElement {
 
     /**
      * @param {HTMLElement} element
+     * @returns {MyElement}
      */
     static create(element) {
         return new MyElement(element);
     }
 
+    /**
+     * @param {string} tagName
+     * @param {string[]} classNames
+     * @returns {MyElement}
+     */
     up(tagName, classNames) {
         if (this.element) {
             this.element = this.element.parentElement;
@@ -55,6 +61,7 @@ class MyElement {
 /**
  * @description 메인
  * @param {HTMLElement} element
+ * @returns {boolean}
  */
 function hideFromMain(element) {
     return MyElement.create(element)
@@ -69,6 +76,7 @@ function hideFromMain(element) {
 /**
  * @description 커뮤니티 > 목록
  * @param {HTMLElement} element
+ * @returns {boolean}
  */
 function hideFromCommunity1(element) {
     return MyElement.create(element)
@@ -165,7 +173,7 @@ const hides = [
 
     hideFromQnA1,
     hideFromQnA2,
-    hideFromQnA3
+    hideFromQnA3,
 ];
 
 /**
@@ -175,14 +183,32 @@ function hideInflammation(inflammation) {
     document.querySelectorAll(`a[href='/users/${inflammation}'`).forEach(element => hides.forEach(hide => hide(element)));
 }
 
+let inflammations = [];
+
 function hideInflammations() {
     hideInflammation("105708"); // 케티
 
-    const inflammations = JSON.parse(localStorage.getItem("inflammations") || "[]");
     inflammations.forEach(inflammation => hideInflammation(inflammation));
 }
 
-setInterval(() => {
+function start() {
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (message && (message.type == "inflammations") && Array.isArray(message.inflammations)) {
+            inflammations = message.inflammations;
+
+            sendResponse({ result: true });
+        }
+    });
+
+    chrome.runtime.sendMessage({ type: "getInflammations" }, response => {
+        if (response && Array.isArray(response.inflammations)) {
+            inflammations = response.inflammations;
+        }
+    });
+
+    setInterval(() => {
+        hideInflammations();
+    }, 10);
     hideInflammations();
-}, 10);
-hideInflammations();
+}
+start();
