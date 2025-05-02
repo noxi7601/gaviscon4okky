@@ -5,7 +5,7 @@
     "description": "OKKY 의 염증을 제거합니다.",
     "version": "1.1.0",
 
-    "permissions": [ "storage", "tabs", "activeTab" ],
+    "permissions": [ "storage", "tabs", "activeTab", "contextMenus" ],
     "host_permissions": [ "http://*.okky.kr/*", "https://*.okky.kr/*" ],
 
     "icons": {
@@ -19,5 +19,12 @@
             "matches": [ "http://*.okky.kr/*", "https://*.okky.kr/*" ],
             "js": [ "scripts/content.js" ]
         }
-    ]
+    ],
+    "action": {
+        "default_icon": {
+            "48": "images/icon-48.png",
+            "144": "images/icon-144.png"
+        },
+        "default_popup": "popup.html"
+    }
 }
