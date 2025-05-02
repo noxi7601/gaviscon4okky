@@ -191,16 +191,44 @@ function hideInflammations() {
     inflammations.forEach(inflammation => hideInflammation(inflammation));
 }
 
+/**
+ * @param {HTMLElement} element
+ * @returns {HTMLAnchorElement | null}
+ */
+function getAnchor(element) {
+    let current = element;
+    while (current) {
+        if (current.tagName.toLowerCase() == "a") {
+            return current;
+        }
+
+        current = current.parentElement;
+    }
+
+    return null;
+}
+
 function start() {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        if (message && (message.type == "inflammations") && Array.isArray(message.inflammations)) {
+        if (message && (message.type == "set-inflammations") && Array.isArray(message.inflammations)) {
             inflammations = message.inflammations;
 
             sendResponse({ result: true });
         }
     });
 
-    chrome.runtime.sendMessage({ type: "getInflammations" }, response => {
+    document.addEventListener("focusin", event => {
+        const anchor = getAnchor(event.target);
+        if (anchor) {
+            chrome.runtime.sendMessage({ type: "check-inflammation", path: anchor.href }, response => {
+                if (chrome.runtime.lastError || !response) {
+                    console.info("check-inflammation error: " + JSON.stringify(chrome.runtime.lastError));
+                }
+            });
+        }
+    });
+
+    chrome.runtime.sendMessage({ type: "get-inflammations" }, response => {
         if (response && Array.isArray(response.inflammations)) {
             inflammations = response.inflammations;
         }
