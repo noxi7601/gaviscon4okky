@@ -150,11 +150,27 @@ function hideFromQnA2(element) {
 }
 
 /**
- * @description Q&A 게시글 > 목록
+ * @description Q&A 게시글 > 댓글 > 댓글
  * @param {HTMLElement} element
  * @returns {boolean}
  */
 function hideFromQnA3(element) {
+    return MyElement.create(element)
+        .up("div", ["shrink-0"])
+        .up("div", ["flex", "flex-1"])
+        .up("div", ["flex", "items-center"])
+        .up("li", ["pt-1.5", "pb-0.5"])
+        .change(element => {
+            element.style.visibility = "hidden";
+        });
+}
+
+/**
+ * @description Q&A 게시글 > 목록
+ * @param {HTMLElement} element
+ * @returns {boolean}
+ */
+function hideFromQnA4(element) {
     return MyElement.create(element)
         .up("div", ["flex", "gap-x-0.5"])
         .up("div", ["px-1"])
@@ -174,6 +190,7 @@ const hides = [
     hideFromQnA1,
     hideFromQnA2,
     hideFromQnA3,
+    hideFromQnA4,
 ];
 
 /**
