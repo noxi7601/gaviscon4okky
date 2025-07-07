@@ -25,6 +25,23 @@ function setInflammations(inflammations) {
     });
 }
 
+chrome.runtime.onInstalled.addListener(() => {
+    console.log("runtime.onInstalled");
+
+    chrome.contextMenus.create({
+        id: "gaviscon",
+        title: "OKKY 염증 제거",
+        visible: true,
+
+        contexts: [ "link" ],
+        targetUrlPatterns: [ "http://okky.kr/*", "https://okky.kr/*" ],
+    });
+});
+
+chrome.runtime.onStartup.addListener(() => {
+    console.log("runtime.onStartup");
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log(`message.type: ${message.type}`);
 
@@ -39,9 +56,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         const items = /\/users\/([0-9]+)/.exec(message.path);
         if (items) {
-            chrome.contextMenus.update("inflammation", { visible: true });
+            chrome.contextMenus.update("gaviscon", { visible: true });
         } else {
-            chrome.contextMenus.update("inflammation", { visible: false });
+            chrome.contextMenus.update("gaviscon", { visible: false });
         }
 
         sendResponse({ result: true });
@@ -60,20 +77,28 @@ chrome.storage.onChanged.addListener((changes, area) => {
     }
 });
 
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    console.log("contextMenus.onClicked", info, tab);
+
+    if (info.menuItemId == "gaviscon") {
+        const items = /https:\/\/okky.kr\/users\/([0-9]+)/.exec(info.linkUrl);
+        if (items && items.length > 1) {
+            const inflammation = items[1];
+
+            chrome.storage.local.get("inflammations", result => {
+                const inflammations = result.inflammations || [];
+                if (!inflammations.includes(inflammation)) {
+                    inflammations.push(inflammation);
+                    chrome.storage.local.set({ inflammations: inflammations }, () => {
+                        setInflammations(inflammations);
+                    });
+                }
+            });
+        }
+    }
+});
+
 function start() {
-    chrome.contextMenus.create({
-        id: "inflammation",
-        title: "OKKY 염증 제거",
-        visible: true,
-
-        contexts: [ "link" ],
-        targetUrlPatterns: [ "http://okky.kr/*", "https://okky.kr/*" ],
-    });
-
-    chrome.contextMenus.onClicked.addListener((info, tab) => {
-        console.log("contextMenus.onClicked", info, tab);
-    });
-
     // setInterval(() => {
     //     chrome.storage.local.get("inflammations", result => {
     //         if (result && Array.isArray(result.inflammations)) {
