@@ -1,9 +1,45 @@
 :root {
     font-family: "맑은 고딕";
-    font-size: 16px;
+    font-size: 20px;
+}
+
+.inflammation {
+    border-bottom: 1px solid #ccc;
+
+    display: flex;
+    align-items: center;
+    padding: .5rem;
+    gap: .5rem;
+}
+
+.inflammation .delete {
+    cursor: pointer;
+
+    margin-left: auto;
 }
 
 #container {
-    width: 500px;
+    width: 350px;
     height: 500px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    background-color: #0c98ac;
+
+    padding: .25rem;
+
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+#content {
+    flex-grow: 1;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }

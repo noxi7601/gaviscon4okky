@@ -17,7 +17,7 @@
     "content_scripts": [
         {
             "matches": [ "http://*.okky.kr/*", "https://*.okky.kr/*" ],
-            "js": [ "scripts/content.js" ]
+            "js": [ "scripts/common.js", "scripts/content.js" ]
         }
     ],
     "action": {

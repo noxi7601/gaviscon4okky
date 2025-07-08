@@ -1,4 +1,4 @@
-// content.js
+/// <reference path="./common.d.ts" />
 
 class MyElement {
     /**
@@ -56,156 +56,238 @@ class MyElement {
             return false
         }
     }
+
+    get empty() {
+        return !this.element;
+    }
 }
 
 /**
  * @description 메인
  * @param {HTMLElement} element
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromMain(element) {
+function changeFromMain(element, visible) {
     return MyElement.create(element)
         .up("div", ["flex", "space-x-1"])
         .up("div", ["flex", "mb-2"])
         .change(element => {
-            element.style.visibility = "hidden";
-            element.nextSibling.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+                element.nextSibling.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+                element.nextSibling.style.visibility = "hidden";
+            }
         });
 }
 
 /**
  * @description 커뮤니티 > 목록
  * @param {HTMLElement} element
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromCommunity1(element) {
+function changeFromCommunity1(element, visible) {
     return MyElement.create(element)
         .up("div", ["flex", "gap-x-1"])
         .up("div", ["flex", "flex-col"])
         .change(element => {
-            element.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+            }
         });
 }
 
 /**
  * @description 커뮤니티 게시글 > 댓글
  * @param {HTMLElement} element
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromCommunity2(element) {
+function changeFromCommunity2(element, visible) {
     return MyElement.create(element)
         .up("div", ["flex", "flex-1"])
         .up("div", ["flex", "space-x-2"])
         .change(element => {
-            element.style.visibility = "hidden";
-            element.nextSibling.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+                element.nextSibling.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+                element.nextSibling.style.visibility = "hidden";
+            }
         });
 }
 
 /**
  * @description 커뮤니티 게시글 > 목록
  * @param {HTMLElement} element
+ * @param {boolean} visible
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromCommunity3(element) {
+function changeFromCommunity3(element, visible) {
     return MyElement.create(element)
         .up("div", ["flex", "gap-x-0.5"])
         .up("div", ["px-1"])
         .up("div", ["flex", "w-full"])
         .change(element => {
-            element.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+            }
         });
 }
 
 /**
  * @description Q&A > 목록
  * @param {HTMLElement} element
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromQnA1(element) {
+function changeFromQnA1(element, visible) {
     return MyElement.create(element)
         .up("div", ["flex", "gap-x-1"])
         .up("div", ["flex", "items-center"])
         .up("div", ["flex", "w-full"])
         .up("div", ["flex", "gap-x-4"])
         .change(element => {
-            element.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+            }
         });
 }
 
 /**
  * @description Q&A 게시글 > 댓글
  * @param {HTMLElement} element
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromQnA2(element) {
+function changeFromQnA2(element, visible) {
     return MyElement.create(element)
         .up("div", ["flex", "gap-x-2.5"])
         .up("div", ["flex-1"])
         .up("div", ["flex", "gap-x-2.5"])
         .change(element => {
-            element.style.visibility = "hidden";
-            element.nextSibling.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+                element.nextSibling.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+                element.nextSibling.style.visibility = "hidden";
+            }
         });
 }
 
 /**
  * @description Q&A 게시글 > 댓글 > 댓글
  * @param {HTMLElement} element
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromQnA3(element) {
+function changeFromQnA3(element, visible) {
     return MyElement.create(element)
         .up("div", ["shrink-0"])
         .up("div", ["flex", "flex-1"])
         .up("div", ["flex", "items-center"])
         .up("li", ["pt-1.5", "pb-0.5"])
         .change(element => {
-            element.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+            }
         });
 }
 
 /**
  * @description Q&A 게시글 > 목록
  * @param {HTMLElement} element
+ * @param {boolean} visible
  * @returns {boolean}
  */
-function hideFromQnA4(element) {
+function changeFromQnA4(element, visible) {
     return MyElement.create(element)
         .up("div", ["flex", "gap-x-0.5"])
         .up("div", ["px-1"])
         .up("div", ["flex", "w-full"])
         .change(element => {
-            element.style.visibility = "hidden";
+            if (visible) {
+                element.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+            }
         });
 }
 
-const hides = [
-    hideFromMain,
+const changes = [
+    changeFromMain,
 
-    hideFromCommunity1,
-    hideFromCommunity2,
-    hideFromCommunity3,
+    changeFromCommunity1,
+    changeFromCommunity2,
+    changeFromCommunity3,
 
-    hideFromQnA1,
-    hideFromQnA2,
-    hideFromQnA3,
-    hideFromQnA4,
+    changeFromQnA1,
+    changeFromQnA2,
+    changeFromQnA3,
+    changeFromQnA4,
 ];
 
-/**
- * @param {string} inflammation
- */
-function hideInflammation(inflammation) {
-    document.querySelectorAll(`a[href='/users/${inflammation}'`).forEach(element => hides.forEach(hide => hide(element)));
-}
+/** @type {Inflammations} */
+const inflammations1 = [
+    { id: "105708", active: true }, // 케티
+];
 
-let inflammations = [];
+/** @type {Inflammations} */
+let inflammations2 = inflammations1;
 
-function hideInflammations() {
-    hideInflammation("105708"); // 케티
+function execute() {
+    const inflammations3 = inflammations2.filter(inflammation => inflammation.active);
 
-    inflammations.forEach(inflammation => hideInflammation(inflammation));
+    /** @type {HTMLAnchorElement[]} */
+    const anchors = Array.from(document.querySelectorAll("a[href^='/users/']")).filter(anchor => anchor.textContent.trim() != "");
+
+    inflammations3.forEach(inflammation => {
+        anchors.forEach(anchor => {
+            if (anchor.href.endsWith(`/users/${inflammation.id}`)) {
+                if (anchor.classList.contains("inflammation")) {
+                    return;
+                }
+                anchor.classList.add("inflammation");
+
+                for (const change of changes) {
+                    if (change(anchor, false)) {
+                        break;
+                    }
+                }
+            }
+        });
+    });
+
+    anchors.forEach(anchor => {
+        if (inflammations3.findIndex(inflammation => anchor.href.endsWith(`/users/${inflammation.id}`)) >= 0) {
+            return;
+        }
+
+        if (!anchor.classList.contains("inflammation")) {
+            return;
+        }
+        anchor.classList.remove("inflammation");
+
+        for (const change of changes) {
+            if (change(anchor, true)) {
+                break;
+            }
+        }
+    });
 }
 
 /**
@@ -225,35 +307,32 @@ function getAnchor(element) {
     return null;
 }
 
-function start() {
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        if (message && (message.type == "set-inflammations") && Array.isArray(message.inflammations)) {
-            inflammations = message.inflammations;
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message && (message.type == "set-inflammations") && Array.isArray(message.inflammations)) {
+        inflammations2 = [...inflammations1, ...message.inflammations];
 
-            sendResponse({ result: true });
-        }
-    });
+        sendResponse({ result: true });
+    }
+});
 
-    document.addEventListener("focusin", event => {
-        const anchor = getAnchor(event.target);
-        if (anchor) {
-            chrome.runtime.sendMessage({ type: "check-inflammation", path: anchor.href }, response => {
-                if (chrome.runtime.lastError || !response) {
-                    console.info("check-inflammation error: " + JSON.stringify(chrome.runtime.lastError));
-                }
-            });
-        }
-    });
+document.addEventListener("focusin", event => {
+    const anchor = getAnchor(event.target);
+    if (anchor) {
+        chrome.runtime.sendMessage({ type: "check-inflammation", path: anchor.href, text: anchor.textContent.trim() }, response => {
+            if (chrome.runtime.lastError || !response) {
+                logger.warn("check-inflammation error: " + JSON.stringify(chrome.runtime.lastError));
+            }
+        });
+    }
+});
 
-    chrome.runtime.sendMessage({ type: "get-inflammations" }, response => {
-        if (response && Array.isArray(response.inflammations)) {
-            inflammations = response.inflammations;
-        }
-    });
+chrome.runtime.sendMessage({ type: "get-inflammations" }, response => {
+    if (response && Array.isArray(response.inflammations)) {
+        inflammations2 = [...inflammations1, ...response.inflammations];
+    }
+});
 
-    setInterval(() => {
-        hideInflammations();
-    }, 10);
-    hideInflammations();
-}
-start();
+setInterval(() => {
+    execute();
+}, 10);
+execute();

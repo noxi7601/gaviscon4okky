@@ -1,9 +1,18 @@
-// background.js
+/// <reference path="./common.d.ts" />
+
+importScripts(["./common.js"]);
 
 const tabPaths = [ /http(s?)\:\/\/(.+\.)?okky\.kr(\/.*)?/i ];
 
+/** @type {Inflammation} */
+const target = {
+    id: "",
+    name: "",
+    active: true,
+};
+
 /**
- * @param {string[]} inflammations
+ * @param {Inflammations} inflammations
  */
 function setInflammations(inflammations) {
     chrome.tabs.query({ status: "complete", active: true, currentWindow: true }, tabs => {
@@ -18,7 +27,7 @@ function setInflammations(inflammations) {
 
             chrome.tabs.sendMessage(tab.id, { type: "set-inflammations", inflammations: inflammations }, response => {
                 if (chrome.runtime.lastError || !response) {
-                    console.warn("set-inflammations error: " + JSON.stringify(chrome.runtime.lastError));
+                    logger.warn("set-inflammations error: " + JSON.stringify(chrome.runtime.lastError));
                 }
             });
         }
@@ -26,8 +35,6 @@ function setInflammations(inflammations) {
 }
 
 chrome.runtime.onInstalled.addListener(() => {
-    console.log("runtime.onInstalled");
-
     chrome.contextMenus.create({
         id: "gaviscon",
         title: "OKKY 염증 제거",
@@ -38,26 +45,29 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
-chrome.runtime.onStartup.addListener(() => {
-    console.log("runtime.onStartup");
-});
+// chrome.runtime.onStartup.addListener(() => {
+// });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log(`message.type: ${message.type}`);
-
     if (message.type == "get-inflammations") {
         chrome.storage.local.get("inflammations", result => {
             sendResponse({ inflammations: result.inflammations });
         });
 
-        return true;
+        return true; // 비동기 sendResponse
     } else if (message.type == "check-inflammation") {
-        console.log("path: " + message.path);
-
         const items = /\/users\/([0-9]+)/.exec(message.path);
-        if (items) {
+        if (items && message.text) {
+            target.id = items[1];
+            target.name = message.text;
+            target.active = true;
+
             chrome.contextMenus.update("gaviscon", { visible: true });
         } else {
+            target.id = "";
+            target.name = "";
+            target.active = false;
+
             chrome.contextMenus.update("gaviscon", { visible: false });
         }
 
@@ -77,18 +87,14 @@ chrome.storage.onChanged.addListener((changes, area) => {
     }
 });
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    console.log("contextMenus.onClicked", info, tab);
-
-    if (info.menuItemId == "gaviscon") {
-        const items = /https:\/\/okky.kr\/users\/([0-9]+)/.exec(info.linkUrl);
-        if (items && items.length > 1) {
-            const inflammation = items[1];
-
+chrome.contextMenus.onClicked.addListener((data, tab) => {
+    if (data.menuItemId == "gaviscon") {
+        if (target.id) {
             chrome.storage.local.get("inflammations", result => {
+                /** @type {Inflammations} */
                 const inflammations = result.inflammations || [];
-                if (!inflammations.includes(inflammation)) {
-                    inflammations.push(inflammation);
+                if (inflammations.findIndex(inflammation => inflammation.id == target.id) < 0) {
+                    inflammations.push({ ...target });
                     chrome.storage.local.set({ inflammations: inflammations }, () => {
                         setInflammations(inflammations);
                     });
@@ -97,14 +103,3 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         }
     }
 });
-
-function start() {
-    // setInterval(() => {
-    //     chrome.storage.local.get("inflammations", result => {
-    //         if (result && Array.isArray(result.inflammations)) {
-    //             sendInflammations(result.inflammations);
-    //         }
-    //     });
-    // }, 5000);
-}
-start();
