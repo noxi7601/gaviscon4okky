@@ -1,6 +1,6 @@
-/// <reference path="./common.d.ts" />
+/// <reference path="common.d.ts" />
 
-importScripts(["./common.js"]);
+importScripts(["common.js"]);
 
 const tabPaths = [ /http(s?)\:\/\/(.+\.)?okky\.kr(\/.*)?/i ];
 

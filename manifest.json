@@ -3,13 +3,13 @@
 
     "name": "GAVISCON for OKKY",
     "description": "OKKY 의 염증을 제거합니다.",
-    "version": "1.1.1",
+    "version": "1.1.2",
 
     "permissions": [ "storage", "tabs", "activeTab", "contextMenus" ],
     "host_permissions": [ "http://*.okky.kr/*", "https://*.okky.kr/*" ],
 
     "icons": {
-        "48": "images/icon-48.png"
+        "48": "./images/icon-48.png"
     },
     "background": {
         "service_worker": "scripts/background.js"

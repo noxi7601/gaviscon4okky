@@ -1,4 +1,4 @@
-/// <reference path="./common.d.ts" />
+/// <reference path="common.d.ts" />
 
 class MyElement {
     /**
@@ -228,6 +228,28 @@ function changeFromQnA4(element, visible) {
         });
 }
 
+/**
+ * @description 지식 게시글 > 목록
+ * @param {HTMLElement} element
+ * @param {boolean} visible
+ * @returns {boolean}
+ */
+function changeFromKnowledge(element, visible) {
+    return MyElement.create(element)
+        .up("p", ["flex", "items-center"])
+        .up("div", ["text-sm/6"])
+        .up("div", ["flex", "items-center"])
+        .up("div", [])
+        .up("div", ["flex", "gap-4", "sm:gap-8"])
+        .change(element => {
+            if (visible) {
+                element.style.visibility = "visible";
+            } else {
+                element.style.visibility = "hidden";
+            }
+        });
+}
+
 const changes = [
     changeFromMain,
 
@@ -239,6 +261,8 @@ const changes = [
     changeFromQnA2,
     changeFromQnA3,
     changeFromQnA4,
+
+    changeFromKnowledge,
 ];
 
 /** @type {Inflammations} */

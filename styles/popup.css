@@ -43,3 +43,10 @@
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+#content #cover {
+    width: 100%;
+    height: 100%;
+
+    background-color: silver;
+}
