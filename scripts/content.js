@@ -1,4 +1,4 @@
-/// <reference path="common.d.ts" />
+/// <reference path='common.d.ts' />
 
 class MyElement {
     /**
@@ -19,7 +19,7 @@ class MyElement {
 
     /**
      * @param {string} tagName
-     * @param {string[]} classNames
+     * @param {string[] | string} classNames
      * @returns {MyElement}
      */
     up(tagName, classNames) {
@@ -27,7 +27,8 @@ class MyElement {
             this.element = this.element.parentElement;
             if (this.element) {
                 if (this.element.tagName.toLowerCase() == tagName) {
-                    for (const className of classNames) {
+                    const classNames9 = classNames instanceof Array ? classNames : classNames.split(/\s+/);
+                    for (const className of classNames9) {
                         if (!this.element.classList.contains(className)) {
                             this.element = null;
 
@@ -70,15 +71,15 @@ class MyElement {
  */
 function changeFromMain(element, visible) {
     return MyElement.create(element)
-        .up("div", ["flex", "space-x-1"])
-        .up("div", ["flex", "mb-2"])
+        .up('div', 'flex space-x-1')
+        .up('div', 'flex mb-2')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
-                element.nextSibling.style.visibility = "visible";
+                element.style.visibility = 'visible';
+                element.nextSibling.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
-                element.nextSibling.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
+                element.nextSibling.style.visibility = 'hidden';
             }
         });
 }
@@ -91,13 +92,14 @@ function changeFromMain(element, visible) {
  */
 function changeFromCommunity1(element, visible) {
     return MyElement.create(element)
-        .up("div", ["flex", "gap-x-1"])
-        .up("div", ["flex", "flex-col"])
+        .up('div', 'flex gap-1')
+        .up('div', 'flex')
+        .up('div', 'flex px-2')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
+                element.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
             }
         });
 }
@@ -110,15 +112,15 @@ function changeFromCommunity1(element, visible) {
  */
 function changeFromCommunity2(element, visible) {
     return MyElement.create(element)
-        .up("div", ["flex", "flex-1"])
-        .up("div", ["flex", "space-x-2"])
+        .up('div', 'flex')
+        .up('div', 'flex space-x-2')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
-                element.nextSibling.style.visibility = "visible";
+                element.style.visibility = 'visible';
+                element.nextSibling.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
-                element.nextSibling.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
+                element.nextSibling.style.visibility = 'hidden';
             }
         });
 }
@@ -132,14 +134,14 @@ function changeFromCommunity2(element, visible) {
  */
 function changeFromCommunity3(element, visible) {
     return MyElement.create(element)
-        .up("div", ["flex", "gap-x-0.5"])
-        .up("div", ["px-1"])
-        .up("div", ["flex", "w-full"])
+        .up('div', 'flex gap-x-0.5')
+        .up('div', 'px-1')
+        .up('div', 'flex w-full')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
+                element.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
             }
         });
 }
@@ -152,15 +154,15 @@ function changeFromCommunity3(element, visible) {
  */
 function changeFromQnA1(element, visible) {
     return MyElement.create(element)
-        .up("div", ["flex", "gap-x-1"])
-        .up("div", ["flex", "items-center"])
-        .up("div", ["flex", "w-full"])
-        .up("div", ["flex", "gap-x-4"])
+        .up('div', 'flex gap-1')
+        .up('div', 'flex')
+        .up('div', 'flex w-full')
+        .up('div', 'flex gap-x-4')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
+                element.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
             }
         });
 }
@@ -173,16 +175,17 @@ function changeFromQnA1(element, visible) {
  */
 function changeFromQnA2(element, visible) {
     return MyElement.create(element)
-        .up("div", ["flex", "gap-x-2.5"])
-        .up("div", ["flex-1"])
-        .up("div", ["flex", "gap-x-2.5"])
+        .up('div', 'flex gap-x-2.5 gap-y-2')
+        .up('div', 'flex-1')
+        .up('div', 'flex gap-x-2.5')
+        .up('div', 'flex gap-4')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
-                element.nextSibling.style.visibility = "visible";
+                element.style.visibility = 'visible';
+                element.nextSibling.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
-                element.nextSibling.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
+                element.nextSibling.style.visibility = 'hidden';
             }
         });
 }
@@ -195,15 +198,17 @@ function changeFromQnA2(element, visible) {
  */
 function changeFromQnA3(element, visible) {
     return MyElement.create(element)
-        .up("div", ["shrink-0"])
-        .up("div", ["flex", "flex-1"])
-        .up("div", ["flex", "items-center"])
-        .up("li", ["pt-1.5", "pb-0.5"])
+        .up('div', 'flex gap-x-1')
+        .up('div', 'flex gap-x-1')
+        .up('div', 'flex gap-x-2')
+        .up('div', 'flex')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
+                element.style.visibility = 'visible';
+                element.nextSibling.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
+                element.nextSibling.style.visibility = 'hidden';
             }
         });
 }
@@ -216,14 +221,14 @@ function changeFromQnA3(element, visible) {
  */
 function changeFromQnA4(element, visible) {
     return MyElement.create(element)
-        .up("div", ["flex", "gap-x-0.5"])
-        .up("div", ["px-1"])
-        .up("div", ["flex", "w-full"])
+        .up('div', 'flex shrink-0 gap-x-0.5')
+        .up('div', 'px-1')
+        .up('div', 'flex w-full')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
+                element.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
             }
         });
 }
@@ -236,16 +241,16 @@ function changeFromQnA4(element, visible) {
  */
 function changeFromKnowledge(element, visible) {
     return MyElement.create(element)
-        .up("p", ["flex", "items-center"])
-        .up("div", ["text-sm/6"])
-        .up("div", ["flex", "items-center"])
-        .up("div", [])
-        .up("div", ["flex", "gap-4", "sm:gap-8"])
+        .up('p', 'flex gap-2')
+        .up('div', 'text-sm/6')
+        .up('div', 'flex gap-2')
+        .up('div', '')
+        .up('div', 'flex gap-4')
         .change(element => {
             if (visible) {
-                element.style.visibility = "visible";
+                element.style.visibility = 'visible';
             } else {
-                element.style.visibility = "hidden";
+                element.style.visibility = 'hidden';
             }
         });
 }
@@ -267,7 +272,7 @@ const changes = [
 
 /** @type {Inflammations} */
 const inflammations1 = [
-    { id: "105708", active: true }, // 케티
+    { id: '105708', active: true }, // 케티
 ];
 
 /** @type {Inflammations} */
@@ -276,16 +281,26 @@ let inflammations2 = inflammations1;
 function execute() {
     const inflammations3 = inflammations2.filter(inflammation => inflammation.active);
 
+    const anchorChecker = /\/users\/([\d\w]+)(\/.+)?/;
+    /**
+     * @param {HTMLAnchorElement} anchor
+     * @param {string} id
+     * @returns {boolean}
+     * */
+    const anchorCheck = (anchor, id) => {
+        const items = anchorChecker.exec(anchor.getAttribute('href'));
+        return (items != null) && (items.length > 0) && (items[1] == id);
+    };
     /** @type {HTMLAnchorElement[]} */
-    const anchors = Array.from(document.querySelectorAll("a[href^='/users/']")).filter(anchor => anchor.textContent.trim() != "");
+    const anchors = Array.from(document.querySelectorAll('a[href^="/users/"]')).filter(anchor => anchor.textContent.trim() != '');
 
     inflammations3.forEach(inflammation => {
         anchors.forEach(anchor => {
-            if (anchor.href.endsWith(`/users/${inflammation.id}`)) {
-                if (anchor.classList.contains("inflammation")) {
+            if (anchorCheck(anchor, inflammation.id)) {
+                if (anchor.classList.contains('inflammation')) {
                     return;
                 }
-                anchor.classList.add("inflammation");
+                anchor.classList.add('inflammation');
 
                 for (const change of changes) {
                     if (change(anchor, false)) {
@@ -297,14 +312,14 @@ function execute() {
     });
 
     anchors.forEach(anchor => {
-        if (inflammations3.findIndex(inflammation => anchor.href.endsWith(`/users/${inflammation.id}`)) >= 0) {
+        if (inflammations3.findIndex(inflammation => anchorCheck(anchor, inflammation.id)) >= 0) {
             return;
         }
 
-        if (!anchor.classList.contains("inflammation")) {
+        if (!anchor.classList.contains('inflammation')) {
             return;
         }
-        anchor.classList.remove("inflammation");
+        anchor.classList.remove('inflammation');
 
         for (const change of changes) {
             if (change(anchor, true)) {
@@ -314,6 +329,21 @@ function execute() {
     });
 }
 
+function executeLazy() {
+    if (executeLazy.flag) {
+        return;
+    }
+    executeLazy.flag = true;
+    setTimeout(() => {
+        try {
+            execute();
+        } finally {
+            executeLazy.flag = false;
+        }
+    }, 30);
+}
+executeLazy.flag = false;
+
 /**
  * @param {HTMLElement} element
  * @returns {HTMLAnchorElement | null}
@@ -321,7 +351,7 @@ function execute() {
 function getAnchor(element) {
     let current = element;
     while (current) {
-        if (current.tagName.toLowerCase() == "a") {
+        if (current.tagName.toLowerCase() == 'a') {
             return current;
         }
 
@@ -332,31 +362,33 @@ function getAnchor(element) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message && (message.type == "set-inflammations") && Array.isArray(message.inflammations)) {
+    if (message && (message.type == 'set-inflammations') && Array.isArray(message.inflammations)) {
         inflammations2 = [...inflammations1, ...message.inflammations];
+        executeLazy();
 
         sendResponse({ result: true });
     }
 });
 
-document.addEventListener("focusin", event => {
+document.addEventListener('focusin', event => {
     const anchor = getAnchor(event.target);
     if (anchor) {
-        chrome.runtime.sendMessage({ type: "check-inflammation", path: anchor.href, text: anchor.textContent.trim() }, response => {
+        chrome.runtime.sendMessage({ type: 'check-inflammation', path: anchor.href, text: anchor.textContent.trim() }, response => {
             if (chrome.runtime.lastError || !response) {
-                logger.warn("check-inflammation error: " + JSON.stringify(chrome.runtime.lastError));
+                logger.warn('check-inflammation error: ' + JSON.stringify(chrome.runtime.lastError));
             }
         });
     }
 });
 
-chrome.runtime.sendMessage({ type: "get-inflammations" }, response => {
+chrome.runtime.sendMessage({ type: 'get-inflammations' }, response => {
     if (response && Array.isArray(response.inflammations)) {
         inflammations2 = [...inflammations1, ...response.inflammations];
     }
 });
 
-setInterval(() => {
-    execute();
-}, 10);
-execute();
+(new MutationObserver(() => {
+    executeLazy();
+})).observe(document.body, { childList: true, subtree: true });
+
+executeLazy();
