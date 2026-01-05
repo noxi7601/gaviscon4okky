@@ -48,21 +48,21 @@ class MyElement {
     }
 
     and() {
-        this.element3 = null;
-        if (this.element2) {
+        if (this.element2 || this.element3) {
             this.element2 = this.element1;
         }
+        this.element3 = null;
 
         return this;
     }
 
     or() {
         if (this.element2) {
-            if (!this.element3) {
-                this.element3 = this.element2;
-            }
+            this.element3 = this.element2;
+            this.element2 = null;
+        } else if (!this.element3) {
+            this.element2 = this.element1;
         }
-        this.element2 = this.element1;
 
         return this;
     }
@@ -70,7 +70,7 @@ class MyElement {
     /**
      * @param {string} tagName
      * @param {string[] | string} classNames
-     * @param {number} count
+     * @param {number} [count = 1]
      * @returns {MyElement}
      */
     up(tagName, classNames, count = 1) {
@@ -114,28 +114,7 @@ class MyElement {
  * @returns {boolean}
  */
 function checkTopic(path) {
-    return document.querySelector('header > nav')?.querySelector(`a[href="${path}"].text-blue-500`) != null;
-}
-
-/**
- * @description 메인
- * @param {HTMLElement} element
- * @param {boolean} visible
- * @returns {boolean}
- */
-function changeFromMain(element, visible) {
-    return MyElement.create(element)
-        .up('div', 'flex space-x-1')
-        .up('div', 'flex mb-2')
-        .change(element => {
-            if (visible) {
-                element.style.visibility = 'visible';
-                element.nextSibling.style.visibility = 'visible';
-            } else {
-                element.style.visibility = 'hidden';
-                element.nextSibling.style.visibility = 'hidden';
-            }
-        });
+    return Boolean(document.querySelector('header > nav')?.querySelector(`a[href="${path}"].text-blue-500`));
 }
 
 /**
@@ -344,8 +323,6 @@ function changeFromKnowledge2(element, visible) {
 }
 
 const changes = [
-    changeFromMain,
-
     changeFromCommunity1,
     changeFromCommunity2,
     changeFromCommunity3,
