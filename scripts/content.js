@@ -6,7 +6,16 @@ class MyElement {
      */
     constructor(element) {
         /** @type {HTMLElement} */
-        this.element = element;
+        this.element1 = element;
+
+        /** @type {HTMLElement | null} */
+        this.element2 = element;
+
+        /** @type {HTMLElement | null} */
+        this.element3 = null;
+
+        /** @type {boolean} */
+        this.flag = false;
     }
 
     /**
@@ -18,6 +27,7 @@ class MyElement {
     }
 
     /**
+     * @private
      * @param {HTMLElement} element
      * @param {string} tagName
      * @param {string[]} classNames
@@ -37,6 +47,26 @@ class MyElement {
         }
     }
 
+    and() {
+        this.element3 = null;
+        if (this.element2) {
+            this.element2 = this.element1;
+        }
+
+        return this;
+    }
+
+    or() {
+        if (this.element2) {
+            if (!this.element3) {
+                this.element3 = this.element2;
+            }
+        }
+        this.element2 = this.element1;
+
+        return this;
+    }
+
     /**
      * @param {string} tagName
      * @param {string[] | string} classNames
@@ -44,19 +74,19 @@ class MyElement {
      * @returns {MyElement}
      */
     up(tagName, classNames, count = 1) {
-        if (this.element) {
+        if (this.element2) {
             for (let index = 0; index < count; index++) {
-                this.element = this.element.parentElement;
-                if (!this.element) {
+                this.element2 = this.element2.parentElement;
+                if (!this.element2) {
                     break;
                 }
             }
         }
 
-        if (this.element) {
+        if (this.element2) {
             const classNames9 = Array.isArray(classNames) ? classNames : classNames.split(/\s+/);
-            if (!this.check(this.element, tagName, classNames9)) {
-                this.element = null;
+            if (!this.check(this.element2, tagName, classNames9)) {
+                this.element2 = null;
             }
         }
 
@@ -68,18 +98,23 @@ class MyElement {
      * @returns {boolean}
      */
     change(handler) {
-        if (this.element) {
-            handler(this.element);
+        const element = this.element2 ? this.element2 : this.element3;
+        if (element) {
+            handler(element);
 
             return true;
         } else {
             return false
         }
     }
+}
 
-    get empty() {
-        return !this.element;
-    }
+/**
+ * @param {string} path
+ * @returns {boolean}
+ */
+function checkTopic(path) {
+    return document.querySelector('header > nav')?.querySelector(`a[href="${path}"].text-blue-500`) != null;
 }
 
 /**
@@ -110,6 +145,10 @@ function changeFromMain(element, visible) {
  * @returns {boolean}
  */
 function changeFromCommunity1(element, visible) {
+    if (!checkTopic('/community')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'relative flex flex-col px-2', 3)
         .change(element => {
@@ -128,8 +167,12 @@ function changeFromCommunity1(element, visible) {
  * @returns {boolean}
  */
 function changeFromCommunity2(element, visible) {
+    if (!checkTopic('/community')) {
+        return false;
+    }
+
     return MyElement.create(element)
-        .up('div', 'flex items-center space-x-2', 3)
+        .up('div', 'flex items-center space-x-2', 2)
         .change(element => {
             if (visible) {
                 element.style.visibility = 'visible';
@@ -149,6 +192,10 @@ function changeFromCommunity2(element, visible) {
  * @returns {boolean}
  */
 function changeFromCommunity3(element, visible) {
+    if (!checkTopic('/community')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'flex w-full items-center', 3)
         .change(element => {
@@ -167,6 +214,10 @@ function changeFromCommunity3(element, visible) {
  * @returns {boolean}
  */
 function changeFromQnA1(element, visible) {
+    if (!checkTopic('/questions')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'flex gap-x-4', 4)
         .change(element => {
@@ -185,6 +236,10 @@ function changeFromQnA1(element, visible) {
  * @returns {boolean}
  */
 function changeFromQnA2(element, visible) {
+    if (!checkTopic('/questions')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'flex items-start justify-between gap-4', 4)
         .change(element => {
@@ -205,6 +260,10 @@ function changeFromQnA2(element, visible) {
  * @returns {boolean}
  */
 function changeFromQnA3(element, visible) {
+    if (!checkTopic('/questions')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'flex items-center text-xs sm:text-sm', 4)
         .change(element => {
@@ -225,6 +284,10 @@ function changeFromQnA3(element, visible) {
  * @returns {boolean}
  */
 function changeFromQnA4(element, visible) {
+    if (!checkTopic('/questions')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'flex w-full items-center', 3)
         .change(element => {
@@ -243,6 +306,10 @@ function changeFromQnA4(element, visible) {
  * @returns {boolean}
  */
 function changeFromKnowledge1(element, visible) {
+    if (!checkTopic('/knowledge')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'flex gap-4 sm:gap-8', 5)
         .change(element => {
@@ -261,6 +328,10 @@ function changeFromKnowledge1(element, visible) {
  * @returns {boolean}
  */
 function changeFromKnowledge2(element, visible) {
+    if (!checkTopic('/knowledge')) {
+        return false;
+    }
+
     return MyElement.create(element)
         .up('div', 'flex items-center space-x-2', 2)
         .change(element => {
