@@ -1,13 +1,13 @@
-/// <reference path="common.d.ts" />
+/// <reference path='common.d.ts' />
 
-importScripts(["common.js"]);
+importScripts(['common.js']);
 
 const tabPaths = [ /http(s?)\:\/\/(.+\.)?okky\.kr(\/.*)?/i ];
 
 /** @type {Inflammation} */
 const target = {
-    id: "",
-    name: "",
+    id: '',
+    name: '',
     active: true,
 };
 
@@ -15,7 +15,7 @@ const target = {
  * @param {Inflammations} inflammations
  */
 function setInflammations(inflammations) {
-    chrome.tabs.query({ status: "complete", active: true, currentWindow: true }, tabs => {
+    chrome.tabs.query({ status: 'complete', active: true, currentWindow: true }, tabs => {
         for (const tab of tabs) {
             if (!tab.id) {
                 continue;
@@ -25,9 +25,9 @@ function setInflammations(inflammations) {
                 continue;
             }
 
-            chrome.tabs.sendMessage(tab.id, { type: "set-inflammations", inflammations: inflammations }, response => {
+            chrome.tabs.sendMessage(tab.id, { type: 'set-inflammations', inflammations: inflammations }, response => {
                 if (chrome.runtime.lastError || !response) {
-                    logger.warn("set-inflammations error: " + JSON.stringify(chrome.runtime.lastError));
+                    logger.warn('set-inflammations error: ' + JSON.stringify(chrome.runtime.lastError));
                 }
             });
         }
@@ -36,12 +36,12 @@ function setInflammations(inflammations) {
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
-        id: "gaviscon",
-        title: "OKKY 염증 제거",
+        id: 'gaviscon',
+        title: 'OKKY 염증 제거',
         visible: true,
 
-        contexts: [ "link" ],
-        targetUrlPatterns: [ "http://okky.kr/*", "https://okky.kr/*" ],
+        contexts: [ 'link' ],
+        targetUrlPatterns: [ 'http://okky.kr/*', 'https://okky.kr/*' ],
     });
 });
 
@@ -49,26 +49,26 @@ chrome.runtime.onInstalled.addListener(() => {
 // });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.type == "get-inflammations") {
-        chrome.storage.local.get("inflammations", result => {
+    if (message.type == 'get-inflammations') {
+        chrome.storage.local.get('inflammations', result => {
             sendResponse({ inflammations: result.inflammations });
         });
 
         return true; // 비동기 sendResponse
-    } else if (message.type == "check-inflammation") {
+    } else if (message.type == 'check-inflammation') {
         const items = /\/users\/([0-9]+)/.exec(message.path);
         if (items && message.text) {
             target.id = items[1];
             target.name = message.text;
             target.active = true;
 
-            chrome.contextMenus.update("gaviscon", { visible: true });
+            chrome.contextMenus.update('gaviscon', { visible: true });
         } else {
-            target.id = "";
-            target.name = "";
+            target.id = '';
+            target.name = '';
             target.active = false;
 
-            chrome.contextMenus.update("gaviscon", { visible: false });
+            chrome.contextMenus.update('gaviscon', { visible: false });
         }
 
         sendResponse({ result: true });
@@ -76,9 +76,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.storage.onChanged.addListener((changes, area) => {
-    if (area == "local") {
+    if (area == 'local') {
         for (const [ key, { newValue } ] of Object.entries(changes)) {
-            if (key == "inflammations") {
+            if (key == 'inflammations') {
                 setInflammations(newValue);
 
                 break;
@@ -88,9 +88,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
 });
 
 chrome.contextMenus.onClicked.addListener((data, tab) => {
-    if (data.menuItemId == "gaviscon") {
+    if (data.menuItemId == 'gaviscon') {
         if (target.id) {
-            chrome.storage.local.get("inflammations", result => {
+            chrome.storage.local.get('inflammations', result => {
                 /** @type {Inflammations} */
                 const inflammations = result.inflammations || [];
                 if (inflammations.findIndex(inflammation => inflammation.id == target.id) < 0) {
